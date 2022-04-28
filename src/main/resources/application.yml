@@ -1,0 +1,42 @@
+# Spring configuration
+spring:
+  application:
+    name: pizza
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        default_schema: dev
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true
+        format_sql: true
+  flyway:
+    enabled: true
+    schemas: dev
+    connect-retries: 5
+    locations: classpath:db/migration
+    create-schemas: true
+    validate-on-migrate: true
+    baseline-on-migrate: true
+    placeholder-replacement: false
+  datasource:
+    url: jdbc:postgresql://0.0.0.0:5432/pizza
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      schema: dev
+
+# Tomcat configuration
+server:
+  port: 8083
+  tomcat:
+    threads:
+      max: 200
+  forward-headers-strategy: framework
+
+
+
+
+
