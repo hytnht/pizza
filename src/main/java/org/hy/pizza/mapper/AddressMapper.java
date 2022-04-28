@@ -1,8 +1,10 @@
 package org.hy.pizza.mapper;
 
-import org.hy.pizza.model.Customer;
+import org.hy.pizza.dto.AddressCreateRequest;
+import org.hy.pizza.dto.AddressUpdateRequest;
 import org.hy.pizza.dto.CustomerCreateRequest;
 import org.hy.pizza.dto.CustomerUpdateRequest;
+import org.hy.pizza.model.Address;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -11,18 +13,18 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
-public interface CustomerMapper {
-    CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
+public interface AddressMapper {
+    AddressMapper INSTANCE = Mappers.getMapper(AddressMapper.class);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(source = "birthday", target = "dob", ignore = true)
-    Customer toCustomer(CustomerCreateRequest request);
+    Address toAddress(CustomerCreateRequest.Address request);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(source = "birthday", target = "dob", ignore = true)
-    void toCustomer(CustomerUpdateRequest request, @MappingTarget Customer customer);
+    Address toAddress(AddressCreateRequest request);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    CustomerCreateRequest toCustomerCreate(CustomerUpdateRequest request);
+    void toAddress(AddressUpdateRequest request, @MappingTarget Address address);
 
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    AddressCreateRequest toAddressCreate(AddressUpdateRequest request);
 }

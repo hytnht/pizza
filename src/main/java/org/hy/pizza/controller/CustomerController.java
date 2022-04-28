@@ -1,8 +1,9 @@
 package org.hy.pizza.controller;
 
 import org.hy.pizza.assembler.CustomerAssembler;
-import org.hy.pizza.exception.CustomerNotFoundException;
 import org.hy.pizza.model.Customer;
+import org.hy.pizza.dto.CustomerCreateRequest;
+import org.hy.pizza.dto.CustomerUpdateRequest;
 import org.hy.pizza.repository.CustomerRepository;
 import org.hy.pizza.service.CustomerService;
 import org.hy.pizza.service.CustomerServiceImpl;
@@ -27,9 +28,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class CustomerController {
     private final CustomerRepository repository;
     private final CustomerAssembler assembler;
-    private final CustomerServiceImpl service;
+    private final CustomerService service;
 
-    public CustomerController(CustomerRepository repository, CustomerAssembler assembler, CustomerServiceImpl service) {
+    public CustomerController(CustomerRepository repository, CustomerAssembler assembler, CustomerService service) {
         this.repository = repository;
         this.assembler = assembler;
         this.service = service;
@@ -49,23 +50,15 @@ public class CustomerController {
     }
 
     @PostMapping("/customers")
-    public ResponseEntity<EntityModel<Customer>> add(@RequestBody Customer customer) {
-        EntityModel<Customer> model = assembler.toModel(repository.save(customer));
+    public ResponseEntity<EntityModel<Customer>> add(@RequestBody CustomerCreateRequest customer) {
+        EntityModel<Customer> model = assembler.toModel(service.create(customer));
         return ResponseEntity.created(model.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(model);
     }
 
     @PutMapping("/customer/{id}")
-    public ResponseEntity<EntityModel<Customer>> update(@RequestBody Customer newCus, @PathVariable Long id) {
-        Customer updateCus = repository.findById(id).map(customer -> {
-            customer.setName(newCus.getName());
-            customer.setDob(newCus.getDob());
-            customer.setPhone(newCus.getPhone());
-            return repository.save(customer);
-        }).orElseGet(() -> {
-            newCus.setId(id);
-            return repository.save(newCus);
-        });
-        EntityModel<Customer> model = assembler.toModel(updateCus);
+    public ResponseEntity<EntityModel<Customer>> update(@RequestBody CustomerUpdateRequest request, @PathVariable Long id) {
+        Customer customer = service.update(id, request);
+        EntityModel<Customer> model = assembler.toModel(customer);
         return ResponseEntity.created(model.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(model);
     }
 

@@ -1,5 +1,6 @@
 package org.hy.pizza.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -51,6 +52,7 @@ public class Address {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "address")
     @ToString.Exclude
+    @JsonIgnore
     private List<CustomerAddress> customerAddress;
 
     @Override
