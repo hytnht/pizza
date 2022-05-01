@@ -52,6 +52,10 @@ public class Address {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "address")
     @ToString.Exclude
+    private List<Order> orders;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "address")
+    @ToString.Exclude
     @JsonIgnore
     private List<CustomerAddress> customerAddress;
 

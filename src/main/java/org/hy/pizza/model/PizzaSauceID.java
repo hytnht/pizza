@@ -5,8 +5,7 @@ import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 
 @EqualsAndHashCode
-public class PizzaAddonID implements Serializable {
+public class PizzaSauceID implements Serializable {
     private Long pizza;
-    private Long topping;
     private Long sauce;
 }

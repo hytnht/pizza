@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
@@ -35,6 +36,10 @@ public class PizzaOrder {
     @NotNull
     @Id
     private Order order;
+
+    @Column(name = "quantity")
+    @NotNull
+    private Integer qty;
 
     @Override
     public boolean equals(Object o) {

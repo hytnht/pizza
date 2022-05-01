@@ -3,6 +3,7 @@ package org.hy.pizza.service;
 import org.hy.pizza.model.Customer;
 import org.hy.pizza.dto.CustomerCreateRequest;
 import org.hy.pizza.dto.CustomerUpdateRequest;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

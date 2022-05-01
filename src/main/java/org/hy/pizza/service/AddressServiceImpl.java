@@ -1,5 +1,6 @@
 package org.hy.pizza.service;
 
+import lombok.RequiredArgsConstructor;
 import org.hy.pizza.dto.AddressCreateRequest;
 import org.hy.pizza.dto.AddressUpdateRequest;
 import org.hy.pizza.exception.AddressNotFoundException;
@@ -8,17 +9,15 @@ import org.hy.pizza.model.Address;
 import org.hy.pizza.model.CustomerAddress;
 import org.hy.pizza.repository.AddressRepository;
 import org.hy.pizza.repository.CustomerAddressRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@RequiredArgsConstructor
+@Service
 public class AddressServiceImpl implements AddressService {
     private final AddressRepository addressRepository;
     private final CustomerAddressRepository customerAddressRepository;
-
-    public AddressServiceImpl(AddressRepository addressRepository, CustomerAddressRepository customerAddressRepository) {
-        this.addressRepository = addressRepository;
-        this.customerAddressRepository = customerAddressRepository;
-    }
 
     @Override
     public List<Address> findAll() {

@@ -1,6 +1,5 @@
 package org.hy.pizza.model;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -36,6 +35,10 @@ public class Order {
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
+    @ManyToOne
+    @NotNull
+    @JoinColumn(name = "address_id", nullable = false)
+    private Address address;
 
     @Override
     public boolean equals(Object o) {

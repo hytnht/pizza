@@ -29,14 +29,10 @@ import java.util.Objects;
 @Table(name = "pizza")
 @Entity
 public class Pizza {
-    @NotNull
+
     @Id
     @GeneratedValue
     private Long id;
-
-    @Column(name = "quantity")
-    @NotNull
-    private Integer qty;
 
     @NotNull
     @Enumerated(EnumType.ORDINAL)
@@ -46,6 +42,14 @@ public class Pizza {
     @JoinColumn(nullable = false)
     @NotNull
     private Crust crust;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pizza")
+    @ToString.Exclude
+    private List<PizzaTopping> pizzaToppings;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pizza")
+    @ToString.Exclude
+    private List<PizzaSauce> pizzaSauces;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "pizza")
     @ToString.Exclude

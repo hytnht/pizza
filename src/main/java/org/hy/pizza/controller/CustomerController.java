@@ -1,12 +1,11 @@
 package org.hy.pizza.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.hy.pizza.assembler.CustomerAssembler;
 import org.hy.pizza.model.Customer;
 import org.hy.pizza.dto.CustomerCreateRequest;
 import org.hy.pizza.dto.CustomerUpdateRequest;
-import org.hy.pizza.repository.CustomerRepository;
 import org.hy.pizza.service.CustomerService;
-import org.hy.pizza.service.CustomerServiceImpl;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -24,17 +23,11 @@ import java.util.List;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+@RequiredArgsConstructor
 @RestController
 public class CustomerController {
-    private final CustomerRepository repository;
     private final CustomerAssembler assembler;
     private final CustomerService service;
-
-    public CustomerController(CustomerRepository repository, CustomerAssembler assembler, CustomerService service) {
-        this.repository = repository;
-        this.assembler = assembler;
-        this.service = service;
-    }
 
     @GetMapping("/customers")
     public ResponseEntity<CollectionModel<EntityModel<Customer>>> all() {
@@ -50,21 +43,21 @@ public class CustomerController {
     }
 
     @PostMapping("/customers")
-    public ResponseEntity<EntityModel<Customer>> add(@RequestBody CustomerCreateRequest customer) {
+    public ResponseEntity<EntityModel<Customer>> create(@RequestBody CustomerCreateRequest customer) {
         EntityModel<Customer> model = assembler.toModel(service.create(customer));
         return ResponseEntity.created(model.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(model);
     }
 
     @PutMapping("/customer/{id}")
-    public ResponseEntity<EntityModel<Customer>> update(@RequestBody CustomerUpdateRequest request, @PathVariable Long id) {
+    public ResponseEntity<EntityModel<Customer>> update(  CustomerUpdateRequest request, @PathVariable Long id) {
         Customer customer = service.update(id, request);
         EntityModel<Customer> model = assembler.toModel(customer);
-        return ResponseEntity.created(model.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(model);
+        return ResponseEntity.ok().body(model);
     }
 
     @DeleteMapping("/customer/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        repository.deleteById(id);
+        service.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }
