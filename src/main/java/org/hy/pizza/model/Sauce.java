@@ -37,7 +37,8 @@ public class Sauce {
     private Integer stock;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "sauce")
-    private List<PizzaAddon> addon;
+    @ToString.Exclude
+    private List<PizzaSauce> pizzaSauces;
 
     @Override
     public boolean equals(Object o) {
