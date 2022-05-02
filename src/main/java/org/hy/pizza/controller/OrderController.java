@@ -11,7 +11,10 @@ import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,31 +24,32 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/api")
 public class OrderController {
     private final OrderAssembler assembler;
     private final OrderService service;
 
-    @GetMapping("/orders")
+    @GetMapping("/v1/order")
     public ResponseEntity<CollectionModel<EntityModel<Order>>> all() {
         List<EntityModel<Order>> orders = service.findAll().stream().map(assembler::toModel).toList();
         return ResponseEntity.ok().body(
                 CollectionModel.of(orders, linkTo(methodOn(OrderController.class).all()).withSelfRel()));
     }
 
-    @GetMapping("/order/{id}")
-    public ResponseEntity<EntityModel<Order>> one(Long id) {
+    @GetMapping("/v1/order/{id}")
+    public ResponseEntity<EntityModel<Order>> one(@PathVariable Long id) {
         EntityModel<Order> order = assembler.toModel(service.findById(id));
         return ResponseEntity.ok().body(order);
     }
 
-    @PostMapping("/orders")
-    public ResponseEntity<EntityModel<Order>> create(OrderCreateRequest request) {
+    @PostMapping("/v1/order")
+    public ResponseEntity<EntityModel<Order>> create(@RequestBody OrderCreateRequest request) {
         EntityModel<Order> model = assembler.toModel(service.create(request));
         return ResponseEntity.created(model.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(model);
     }
 
-    @DeleteMapping("/order/{id}")
-    public ResponseEntity<?> delete(Long id) {
+    @DeleteMapping("/v1/order/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         service.deleteById(id);
         return ResponseEntity.noContent().build();
     }

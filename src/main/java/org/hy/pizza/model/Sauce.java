@@ -5,10 +5,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -20,12 +23,16 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@GenericGenerator(
+        name = "seq_generator",
+        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+        parameters = {@Parameter(name = "sequence_name", value = "sauce_seq")})
 @Table(name = "sauce")
 @Entity
 public class Sauce {
-    private @Id
-    @GeneratedValue
-    Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_generator")
+    private Long id;
 
     @NotNull
     private String name;

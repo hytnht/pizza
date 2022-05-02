@@ -5,11 +5,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -21,12 +24,16 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@GenericGenerator(
+        name = "seq_generator",
+        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+        parameters = {@Parameter(name = "sequence_name", value = "topping_seq")})
 @Table(name = "topping")
 @Entity
 public class Topping {
-    private @Id
-    @GeneratedValue
-    Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_generator")
+    private Long id;
 
     @NotNull
     private String name;
@@ -36,10 +43,6 @@ public class Topping {
 
     @NotNull
     private Integer stock;
-
-    @Column(name = "quantity")
-    @NotNull
-    private Integer qty;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "topping")
     @ToString.Exclude

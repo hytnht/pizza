@@ -1,21 +1,31 @@
 CREATE SCHEMA IF NOT EXISTS dev;
 
+CREATE SEQUENCE IF NOT EXISTS dev.customer_seq START 1 INCREMENT 1;
+CREATE SEQUENCE IF NOT EXISTS dev.address_seq START 1 INCREMENT 1;
+CREATE SEQUENCE IF NOT EXISTS dev.crust_seq START 100 INCREMENT 1;
+CREATE SEQUENCE IF NOT EXISTS dev.topping_seq START 200 INCREMENT 1;
+CREATE SEQUENCE IF NOT EXISTS dev.sauce_seq START 300 INCREMENT 1;
+CREATE SEQUENCE IF NOT EXISTS dev.pizza_seq START 1 INCREMENT 1;
+CREATE SEQUENCE IF NOT EXISTS dev.order_seq START 1000 INCREMENT 1;
+
 CREATE TABLE IF NOT EXISTS dev.address
 (
-    id       BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    id       BIGINT       NOT NULL DEFAULT nextval('dev.address_seq'),
     unit     VARCHAR(255),
     street   VARCHAR(255) NOT NULL,
     ward     VARCHAR(30)  NOT NULL,
     district VARCHAR(30)  NOT NULL,
-    city     VARCHAR(30)  NOT NULL
+    city     VARCHAR(30)  NOT NULL,
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS dev.customer
 (
-    id           BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    id           BIGINT NOT NULL DEFAULT nextval('dev.customer_seq'),
     name         VARCHAR(255),
     day_of_birth DATE,
-    phone_number VARCHAR(15) UNIQUE
+    phone_number VARCHAR(15) UNIQUE,
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS dev.customer_address
@@ -29,43 +39,47 @@ CREATE TABLE IF NOT EXISTS dev.customer_address
 
 CREATE TABLE IF NOT EXISTS dev.crust
 (
-    id    BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    id    BIGINT NOT NULL DEFAULT nextval('dev.crust_seq'),
     name  VARCHAR(255),
     price FLOAT,
-    stock INTEGER
+    stock INTEGER,
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS dev.sauce
 (
-    id    BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    id    BIGINT NOT NULL DEFAULT nextval('dev.sauce_seq'),
     name  VARCHAR(255),
     price FLOAT,
-    stock INTEGER
+    stock INTEGER,
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS dev.topping
 (
-    id       BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    name     VARCHAR(255),
-    price    FLOAT,
-    quantity INTEGER,
-    stock    INTEGER
+    id    BIGINT NOT NULL DEFAULT nextval('dev.topping_seq'),
+    name  VARCHAR(255),
+    price FLOAT,
+    stock INTEGER,
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS dev.pizza
 (
-    id       BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    id       BIGINT NOT NULL DEFAULT nextval('dev.pizza_seq'),
     size     INTEGER,
     crust_id BIGINT NOT NULL,
+    PRIMARY KEY (id),
     CONSTRAINT FK_PIZZA_ON_CRUST FOREIGN KEY (crust_id) REFERENCES dev.crust (id)
 );
 
 CREATE TABLE IF NOT EXISTS dev."order"
 (
-    id            BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    id            BIGINT NOT NULL DEFAULT nextval('dev.order_seq'),
     delivery_note VARCHAR(255),
     customer_id   BIGINT NOT NULL,
     address_id    BIGINT NOT NULL,
+    PRIMARY KEY (id),
     CONSTRAINT FK_ORDER_ON_CUSTOMER FOREIGN KEY (customer_id) REFERENCES dev.customer (id),
     CONSTRAINT FK_ORDER_ON_ADDRESS FOREIGN KEY (address_id) REFERENCES address (id)
 );

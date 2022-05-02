@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,36 +27,37 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/api")
 public class AddressController {
     private final AddressAssembler assembler;
     private final AddressService service;
 
-    @GetMapping("/addresses")
+    @GetMapping("/v1/address")
     public ResponseEntity<CollectionModel<EntityModel<Address>>> all() {
         List<EntityModel<Address>> address = service.findAll().stream().map(assembler::toModel).toList();
         return ResponseEntity.ok().body(
                 CollectionModel.of(address, linkTo(methodOn(AddressController.class).all()).withSelfRel()));
     }
 
-    @GetMapping("/address/{id}")
+    @GetMapping("/v1/address/{id}")
     public ResponseEntity<EntityModel<Address>> one(@PathVariable Long id) {
         EntityModel<Address> address = assembler.toModel(service.findById(id));
         return ResponseEntity.ok().body(address);
     }
 
-    @PostMapping("/address")
+    @PostMapping("/v1/address")
     public ResponseEntity<EntityModel<Address>> create(@RequestBody AddressCreateRequest request) {
         EntityModel<Address> address = assembler.toModel(service.create(request));
         return ResponseEntity.created(address.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(address);
     }
 
-    @PutMapping("address/{id}")
+    @PutMapping("/v1/address/{id}")
     public ResponseEntity<EntityModel<Address>> update(@RequestBody AddressUpdateRequest request, @PathVariable Long id) {
         EntityModel<Address> address = assembler.toModel(service.update(id, request));
         return ResponseEntity.ok().body(address);
     }
 
-    @DeleteMapping("/address/{id}")
+    @DeleteMapping("/v1/address/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         service.deleteById(id);
         return ResponseEntity.noContent().build();
