@@ -17,11 +17,13 @@ import org.hy.pizza.repository.PizzaSauceRepository;
 import org.hy.pizza.repository.PizzaToppingRepository;
 import org.hy.pizza.repository.SauceRepository;
 import org.hy.pizza.repository.ToppingRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
+@Service
 public class OrderServiceImpl implements OrderService {
     private final PizzaRepository pizzaRepository;
     private final OrderRepository orderRepository;

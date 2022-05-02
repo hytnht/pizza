@@ -10,9 +10,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class ExceptionAdvice {
     @ResponseBody
-    @ExceptionHandler({CustomerNotFoundException.class, OrderNotFoundException.class, PizzaNotFoundException.class})
+    @ExceptionHandler({CustomerNotFoundException.class, OrderNotFoundException.class, IngredientNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     ResponseEntity<?> notFoundHandler(RuntimeException exception) {
-        return ResponseEntity.status(404).body(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
+    @ResponseBody
+    @ExceptionHandler({CustomerExistedException.class})
+    @ResponseStatus(HttpStatus.CONFLICT)
+    ResponseEntity<?> conflictHandler(RuntimeException exception) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
     }
 }

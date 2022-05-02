@@ -22,14 +22,14 @@ public class SauceController {
     private final SauceAssembler assembler;
     private final SauceService service;
     
-    @GetMapping("/crusts")
+    @GetMapping("/sauces")
     public ResponseEntity<CollectionModel<EntityModel<Sauce>>> all() {
         List<EntityModel<Sauce>> crusts = service.findAll().stream().map(assembler::toModel).toList(); 
         return ResponseEntity.ok().body(
                 CollectionModel.of(crusts, linkTo(methodOn(SauceController.class).all()).withSelfRel()));
     }
     
-    @GetMapping("/crust/{id}")
+    @GetMapping("/sauce/{id}")
     public ResponseEntity<EntityModel<Sauce>> one(@PathVariable Long id) {
         return ResponseEntity.ok().body(assembler.toModel(service.findById(id)));
     } 

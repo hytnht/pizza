@@ -15,11 +15,11 @@ public interface CustomerMapper {
     CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(source = "birthday", target = "dob", ignore = true)
+    @Mapping(source = "birthday", target = "dob")
     Customer toCustomer(CustomerCreateRequest request);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(source = "birthday", target = "dob", ignore = true)
+    @Mapping(source = "birthday", target = "dob")
     void toCustomer(CustomerUpdateRequest request, @MappingTarget Customer customer);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

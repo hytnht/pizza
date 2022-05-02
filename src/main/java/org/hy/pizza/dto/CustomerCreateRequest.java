@@ -3,11 +3,11 @@ package org.hy.pizza.dto;
 import org.hy.pizza.model.City;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
 
 public record CustomerCreateRequest(
         @NotNull String name,
-        Date birthday,
+        LocalDate birthday,
         @NotNull String phone,
         @NotNull Address address
 ) {

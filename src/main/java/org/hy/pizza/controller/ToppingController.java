@@ -22,14 +22,14 @@ public class ToppingController {
     private final ToppingAssembler assembler;
     private final ToppingService service;
     
-    @GetMapping("/crusts")
+    @GetMapping("/toppings")
     public ResponseEntity<CollectionModel<EntityModel<Topping>>> all() {
         List<EntityModel<Topping>> crusts = service.findAll().stream().map(assembler::toModel).toList(); 
         return ResponseEntity.ok().body(
                 CollectionModel.of(crusts, linkTo(methodOn(ToppingController.class).all()).withSelfRel()));
     }
     
-    @GetMapping("/crust/{id}")
+    @GetMapping("/topping/{id}")
     public ResponseEntity<EntityModel<Topping>> one(@PathVariable Long id) {
         return ResponseEntity.ok().body(assembler.toModel(service.findById(id)));
     } 

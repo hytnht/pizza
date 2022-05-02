@@ -1,7 +1,5 @@
 package org.hy.pizza.model;
 
-import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -18,7 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,7 +37,7 @@ public class Customer {
 
     @Column(name = "day_of_birth")
     @DateTimeFormat(pattern = "dd/mm/yyyy")
-    private Date dob;
+    private LocalDate dob;
 
     @Column(name = "phone_number", unique = true, length = 15)
     @NotNull

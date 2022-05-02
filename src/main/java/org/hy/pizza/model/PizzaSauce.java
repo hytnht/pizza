@@ -22,7 +22,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Table(name = "sauce")
+@Table(name = "pizza_sauce")
 @IdClass(PizzaSauceID.class)
 @Entity
 public class PizzaSauce {

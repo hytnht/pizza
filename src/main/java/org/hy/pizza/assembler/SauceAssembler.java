@@ -4,10 +4,12 @@ import org.hy.pizza.controller.SauceController;
 import org.hy.pizza.model.Sauce;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
+import org.springframework.stereotype.Component;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+@Component
 public class SauceAssembler implements RepresentationModelAssembler<Sauce, EntityModel<Sauce>> {
     @Override
     public EntityModel<Sauce> toModel(Sauce sauce) {
